@@ -17,11 +17,26 @@ app.get('/', async (req, res) => {
     const products = await db.collection('products').find({}).toArray();
     res.json(products);
 })
-function populatedCartIds(ids){
-    return ids.map(itemID => products.find(product => product.id === itemID))
+
+// async function populatedCartIds(ids) {
+//     await clientCon.connect();
+//     const db = clientCon.db('SystemTestDB');
+//     const itemPromises = ids.map(itemID => db.collection('products').findOne({ itemID }));
+//     const items = await itemPromises;
+//     return items;
+// }
+
+async function populatedCartIds(ids){
+    await clientCon.connect();
+    const db = clientCon.db('SystemTestDB');
+    return Promise.all(ids.map(itemID => db.collection('products').findOne({ itemID })))
 }
-app.get('/cart', (req, res) => {
-    const populatedCart = populatedCartIds(itemsCart);
+
+app.get('/users/:userId/cart', async (req, res) => {
+    await clientCon.connect();
+    const db = clientCon.db('SystemTestDB');
+    const user = await db.collection.findOne({ id: req.params.userId });
+    const populatedCart = await populatedCartIds(user.itemsCart);
     res.json(populatedCart);
 })
 
