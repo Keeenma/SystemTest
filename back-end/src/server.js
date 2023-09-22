@@ -1,13 +1,20 @@
 import express, { application } from 'express';
+import { MongoClient } from 'mongodb';
 import { itemsCart as cartItemsRaw, products as productsRaw } from './temp-data';
 
 let itemsCart = cartItemsRaw
 let products = productsRaw
 
+const url = `mongodb+srv://Keeenma:Password12451245@systemtestdb.wfnniuj.mongodb.net/?retryWrites=true&w=majority`
+const clientCon = new MongoClient(url)
 const app = express();
+
 app.use(express.json());
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
+    await clientCon.connect();
+    const db = clientCon.db('SystemTestDB');
+    const products = await db.collection('products').find({}).toArray();
     res.json(products);
 })
 function populatedCartIds(ids){
