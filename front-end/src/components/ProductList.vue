@@ -1,12 +1,12 @@
 <script setup>
     const props = defineProps({
-        products: Array
+        result: Array
     })
 </script>
 <template>
     <div class="grid-wrap">
-        <div class="product-item" v-for="product in products" :key="product.id">
-            <img :src="product.imageName" />
+        <div class="product-item" v-for="product in result" :key="product.id">
+            <img :src="product.imageUrl" />
             <h3 class="product-name">{{ product.name }}</h3>
             <p class="product-price">{{ product.price }}</p>
             <RouterLink :to="`details/${product.id}`">

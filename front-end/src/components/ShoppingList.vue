@@ -8,7 +8,7 @@
 <template>
     <div v-if="itemsCart.length > 0">
         <div class="product-container" v-for="items in itemsCart" :key="items.id">
-            <img class="product-image" :src="items.imageName" />
+            <img class="product-image" :src="items.imageUrl" />
             <div class="details-wrap">
                 <h3>{{ items.name }}</h3>
                 <p>{{ items.price }}</p>
